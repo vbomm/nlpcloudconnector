@@ -8,6 +8,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class NlpCloud {
 
@@ -40,13 +43,32 @@ public class NlpCloud {
         } else throw new HttpResponseException(httpResponse.getStatusLine().getStatusCode(), httpResponse.getStatusLine().getReasonPhrase());
     }
 
-    public String question(String model, boolean useGPU, String question, String context) throws IOException {
-        String body = "{" +
-                "\"question\":\"" + question + "\"," +
-                "\"context\":\"" + context + "\"" +
-                "}";
+    private String generateBody(List<Parameter> parameters) {
+        StringBuilder sb = new StringBuilder();
 
-        JSONObject jsonObj = connect(body, model, useGPU, "question");
+        sb.append("{");
+
+        Iterator<Parameter> iterator = parameters.iterator();
+        while (iterator.hasNext()) {
+            Parameter p = iterator.next();
+            sb.append("\"").append(p.getName()).append("\"");
+            sb.append(":");
+            sb.append("\"").append(p.getValue()).append("\"");
+
+            if (iterator.hasNext()) sb.append(",");
+        }
+
+        sb.append("}");
+
+        return sb.toString();
+    }
+
+    public String question(String model, boolean useGPU, String question, String context) throws IOException {
+        List<Parameter> parameters = new ArrayList<>();
+        parameters.add(new Parameter("question", question));
+        parameters.add(new Parameter("context", context));
+
+        JSONObject jsonObj = connect(generateBody(parameters), model, useGPU, "question");
         return jsonObj.getString("answer");
     }
 }
