@@ -53,7 +53,9 @@ public class NlpCloud {
             Parameter p = iterator.next();
             sb.append("\"").append(p.getName()).append("\"");
             sb.append(":");
-            sb.append("\"").append(p.getValue()).append("\"");
+            if (!p.getIsNumber()) sb.append("\"");
+            sb.append(p.getValue());
+            if (!p.getIsNumber()) sb.append("\"");
 
             if (iterator.hasNext()) sb.append(",");
         }
@@ -70,5 +72,14 @@ public class NlpCloud {
 
         JSONObject jsonObj = connect(generateBody(parameters), model, useGPU, "question");
         return jsonObj.getString("answer");
+    }
+
+    public String generation(String model, boolean useGPU, String text, int max_length) throws IOException {
+        List<Parameter> parameters = new ArrayList<>();
+        parameters.add(new Parameter("text", text));
+        parameters.add(new Parameter("max_length", max_length));
+
+        JSONObject jsonObj = connect(generateBody(parameters), model, useGPU, "generation");
+        return jsonObj.getString("generated_text");
     }
 }
