@@ -19,18 +19,13 @@ public class NlpCloud {
         this.token = token;
     }
 
-    public String question(String model, boolean useGPU, String question, String context) throws IOException {
+    private JSONObject connect(String body, String model, boolean useGPU, String endpoint) throws IOException {
         Request request = Request.Post(
-                    baseUrl + "/" +
+                baseUrl + "/" +
                         apiVersion + "/" +
                         (useGPU ? "gpu/" : "") +
                         model + "/" +
-                        "question");
-
-        String body = "{" +
-                "\"question\":\"" + question + "\"," +
-                "\"context\":\"" + context + "\" " +
-                "}";
+                        endpoint);
 
         request.bodyString(body, ContentType.APPLICATION_JSON);
         request.setHeader("Authorization", "Token " + token);
@@ -41,9 +36,17 @@ public class NlpCloud {
         if (httpResponse.getEntity() != null && httpResponse.getStatusLine().getStatusCode() == 200) {
             String response = EntityUtils.toString(httpResponse.getEntity());
 
-            JSONObject jsonObj = new JSONObject(response);
-
-            return jsonObj.getString("answer");
+            return new JSONObject(response);
         } else throw new HttpResponseException(httpResponse.getStatusLine().getStatusCode(), httpResponse.getStatusLine().getReasonPhrase());
+    }
+
+    public String question(String model, boolean useGPU, String question, String context) throws IOException {
+        String body = "{" +
+                "\"question\":\"" + question + "\"," +
+                "\"context\":\"" + context + "\"" +
+                "}";
+
+        JSONObject jsonObj = connect(body, model, useGPU, "question");
+        return jsonObj.getString("answer");
     }
 }
