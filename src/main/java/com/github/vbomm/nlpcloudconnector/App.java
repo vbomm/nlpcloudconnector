@@ -27,8 +27,9 @@ public class App {
         // example generation
         try {
             String text = "GPT is a powerful NLP model ";
+            int max_length = 50;
 
-            String answer = nlp.generation(Model.finetunedGptNeox20b(), true, text, 50);
+            String answer = nlp.generation(Model.finetunedGptNeox20b(), true, text, max_length);
 
             System.out.println(answer);
         } catch (IOException e) {
