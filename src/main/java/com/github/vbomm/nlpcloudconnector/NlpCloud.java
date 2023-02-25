@@ -72,10 +72,11 @@ public class NlpCloud {
         return jsonObj.getString("answer");
     }
 
-    public String generation(String model, boolean useGPU, String text, int max_length) throws IOException {
+    public String generation(String model, boolean useGPU, String text, int max_length, boolean remove_input) throws IOException {
         List<Parameter> parameters = new ArrayList<>();
         parameters.add(new Parameter("text", text));
         parameters.add(new Parameter("max_length", max_length));
+        parameters.add(new Parameter("remove_input", remove_input));
 
         JSONObject jsonObj = connect(generateBody(parameters), model, useGPU, "generation");
         return jsonObj.getString("generated_text");
