@@ -53,9 +53,7 @@ public class NlpCloud {
             Parameter p = iterator.next();
             sb.append("\"").append(p.getName()).append("\"");
             sb.append(":");
-            if (!p.getIsNumber()) sb.append("\"");
             sb.append(p.getValue());
-            if (!p.getIsNumber()) sb.append("\"");
 
             if (iterator.hasNext()) sb.append(",");
         }

@@ -4,20 +4,15 @@ public class Parameter {
 
     private String name;
     private String value;
-    private boolean isNumber;
-
-    private Parameter(String name, String value, boolean isNumber) {
-        this.name = name;
-        this.value = value;
-        this.isNumber = isNumber;
-    }
 
     public Parameter(String name, String value) {
-        this(name, value, false);
+        this.name = name;
+        this.value = "\"" + value + "\"";
     }
 
     public Parameter(String name, int value) {
-        this(name, Integer.toString(value), true);
+        this.name = name;
+        this.value = Integer.toString(value);
     }
 
     public String getName() {
@@ -34,13 +29,5 @@ public class Parameter {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public boolean getIsNumber() {
-        return isNumber;
-    }
-
-    public void setIsNumber(boolean isNumber) {
-        this.isNumber = isNumber;
     }
 }
