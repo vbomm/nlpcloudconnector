@@ -15,6 +15,11 @@ public class Parameter {
         this.value = Integer.toString(value);
     }
 
+    public Parameter(String name, boolean value) {
+        this.name = name;
+        this.value = value ? "True" : "False";
+    }
+
     public String getName() {
         return name;
     }
