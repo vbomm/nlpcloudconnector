@@ -17,7 +17,7 @@ public class Parameter {
 
     public Parameter(String name, boolean value) {
         this.name = name;
-        this.value = value ? "True" : "False";
+        this.value = value ? "true" : "false";
     }
 
     public String getName() {
