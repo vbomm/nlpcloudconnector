@@ -13,4 +13,6 @@ public class Model {
     public static String finetunedGptNeox20b() {
         return "finetuned-gpt-neox-20b";
     }
+
+    public static String gptJ() { return "gpt-j"; }
 }
